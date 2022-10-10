@@ -22,6 +22,7 @@ def get_train_higgs_data():
 
     with open(TRAIN_FILEPATH, 'r') as file_handle:
         features = np.genfromtxt(file_handle, delimiter=',', max_rows=1, dtype=str)
+        features = features[2:]
         file_handle.close()
 
     return ids, predictions, data, features
@@ -46,6 +47,8 @@ def get_test_higgs_data():
 
     with open(TEST_FILEPATH, 'r') as file_handle:
         features = np.genfromtxt(file_handle, delimiter=',', max_rows=1, dtype=str)
+        features = features[2:]
         file_handle.close()
 
     return ids, predictions, data, features
+#%%
