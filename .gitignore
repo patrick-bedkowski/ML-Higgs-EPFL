@@ -1,6 +1,7 @@
 /data/*
 !/data/README.md
-/src/initial.ipynb
+/src/initial_mine.ipynb
 /src/.ipynb_checkpoints
 .idea
 __pycache__/
+*.csv
