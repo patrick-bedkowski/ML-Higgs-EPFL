@@ -40,9 +40,6 @@ def compute_loss(y, tx, w):
 ### TEMPLATE
 ### END SOLUTION
 
-def sigmoid(x):
-    return 1/(1+np.e**(-x))
-
 def least_squares(y, tx):
     """Calculate the least squares solution.
        returns mse, and optimal weights.

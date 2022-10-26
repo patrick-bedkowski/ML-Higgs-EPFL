@@ -68,5 +68,6 @@ def gradient_descent(loss_function, initial_w, max_iters, gamma, y, tx):
         iter_num += 1
     return w, errors
 
+
 def sigmoid(x):
     return 1/(1+np.e**(-x))
