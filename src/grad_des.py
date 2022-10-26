@@ -1,4 +1,3 @@
-
 # Compute the gradient
 def compute_gradient(y, tx, w):
     err = y - tx.dot(w)
