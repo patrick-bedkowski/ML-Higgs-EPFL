@@ -164,15 +164,15 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     return w, loss
 
 
-def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
+def mean_squared_error_SGD(y, tx, initial_w, max_iters, gamma):
 
     def loss_function_SGD(y, tx, w):
         sample_index = np.random.randint(0, len(y))
         ySGD = y[sample_index]
         xSGD = np.array([tx[sample_index, :]])
-        return compute_loss_and_gradient_least_squares(ySGD, xSGD, w)
+        return compute_loss_and_gradient_mean_squared(ySGD, xSGD, w)
 
-    def compute_loss_and_gradient_least_squares(y, tx, w):
+    def compute_loss_and_gradient_mean_squared(y, tx, w):
         """
         :return: Loss, gradient
         """
@@ -184,6 +184,14 @@ def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
         return loss, gradient
 
     return gradient_descent(loss_function_SGD, initial_w, max_iters, gamma, y, tx)
+
+
+def mean_squared_error_GD(y, tx, initial_w, max_iters, gamma):
+
+    def loss_function_GD(y, tx, w):
+        return compute_loss(y, tx, w, type='mse')
+
+    return gradient_descent(loss_function_GD, initial_w, max_iters, gamma, y, tx)
 
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
@@ -235,3 +243,40 @@ def gradient_descent(loss_function, initial_w, max_iters, gamma, y, tx):
 def sigmoid(x):
     return 1/(1+np.e**(-x))
 
+
+def ridge_regression(y, tx, lambda_):
+    LAMBDA = 2 * len(y) * lambda_
+
+    # Solve Normal Equations with Regularization Term
+    w = np.linalg.solve((tx.T @ tx + (np.eye(len(tx[1])) * LAMBDA)), tx.T @ y)
+
+    return w
+
+
+# Compute the gradient
+def compute_gradient(y, tx, w):
+    err = y - tx.dot(w)
+    grad = - tx.T.dot(err) / len(err)
+
+    return grad
+
+
+def gradient_descent(y, tx, initial_w, max_iters, gamma):
+    # Define parameters to store w and loss
+    ws = [initial_w]
+    losses = []
+    w = initial_w
+
+    for n_iter in range(max_iters):
+        grad = compute_gradient(y, tx, w)
+        loss = compute_loss(y, tx, w, type='mse')
+
+        w = w - gamma * grad
+
+        # store w and loss
+        ws.append(w)
+        losses.append(loss)
+        print("GD iter. {bi}/{ti}: loss={l}, w0={w0}, w1={w1}".format(
+            bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
+
+    return losses, ws
