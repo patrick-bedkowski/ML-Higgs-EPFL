@@ -2,6 +2,12 @@
 import csv
 import numpy as np
 
+def normalize(x):
+    """Standardize the original data set."""
+    mean_x = np.mean(x)
+    std_x = np.std(x)
+    x = (x - mean_x)/ std_x
+    return x, np.mean(x), np.std(x)
 
 def load_csv_data(data_path, sub_sample=False):
     """Loads data and returns y (class labels), tX (features) and ids (event ids)"""
