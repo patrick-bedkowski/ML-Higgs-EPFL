@@ -4,4 +4,5 @@
 /src/.ipynb_checkpoints
 .idea
 __pycache__/
+venv/
 *.csv
