@@ -241,11 +241,26 @@ def gradient_descent(loss_function, initial_w, max_iters, gamma, y, tx):
 
 
 def ridge_regression(y, tx, lambda_):
+    """Perform Ridge Regression
+
+    Args:
+        y: numpy array of shape=(N, )
+        tx: numpy array of shape=(N, D)
+        lambda_: Scalar
+
+    Returns:
+        loss: scalar number
+        w: shape=(D, 1)
+    """
     LAMBDA = 2 * len(y) * lambda_
 
     # Solve Normal Equations with Regularization Term
     w = np.linalg.solve((tx.T @ tx + (np.eye(len(tx[1])) * LAMBDA)), tx.T @ y)
-    return w
+    
+    # Compute loss function
+    loss = compute_loss(y, tx, w, type='mse')
+
+    return w, loss
 
 
 # Compute the gradient
