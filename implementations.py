@@ -13,17 +13,14 @@ def compute_loss(y, tx, w, type='mse'):
     Returns:
         the value of the loss (a scalar), corresponding to the input parameters w.
     """
-    # Compute loss by MSE
     error = y - np.dot(tx, w)
     N = len(tx)
     if type == 'mse':
         loss = 1/(2*N)*np.sum(np.square(error))
     elif type == 'mae':
         loss = 1/N*np.sum(np.abs(error))
-
     return loss
 
-""" ------------------------ Least squares ------------------------ """
 
 def least_squares(y, tx):
     """Calculate the least squares solution.
@@ -43,7 +40,6 @@ def least_squares(y, tx):
     mse = compute_loss(y, tx, w, 'mse')
     return w, mse
 
-""" ------------------------ Regularized logistic regression ------------------------ """
 
 def calculate_logistic_loss(y, tx, w):
     """compute the cost by negative log likelihood.
@@ -66,8 +62,10 @@ def calculate_logistic_loss(y, tx, w):
 
     return float(cost)
 
+
 def sigmoid(x):
-  return 1 / (1 + np.exp(-x))
+    return 1 / (1 + np.exp(-x))
+
 
 def calculate_logistic_loss_gradient(y, tx, w):
     """Compute the gradient of logistic loss.
@@ -84,6 +82,7 @@ def calculate_logistic_loss_gradient(y, tx, w):
     N = len(y)
     grad = 1/N*tx.T.dot(sigmoid(tx.dot(w))-y)
     return grad
+
 
 def penalized_logistic_regression(y, tx, w, lambda_):
     """Return the loss and gradient.
@@ -104,6 +103,7 @@ def penalized_logistic_regression(y, tx, w, lambda_):
     gradient = calculate_logistic_loss_gradient(y, tx, w) + 2*lambda_*w
 
     return float(loss), gradient
+
 
 def learning_by_penalized_gradient(y, tx, w, gamma, lambda_):
     """
@@ -126,6 +126,7 @@ def learning_by_penalized_gradient(y, tx, w, gamma, lambda_):
     w = w - gamma*gradient
     return loss, w
 
+
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     """The regularized logistic regression gradien descent (GD) algorithm.
 
@@ -147,7 +148,6 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     w = initial_w
     losses = []
     threshold = 1e-8
-    
 
     # start the logistic regression
     for iter in range(max_iters):
@@ -240,16 +240,11 @@ def gradient_descent(loss_function, initial_w, max_iters, gamma, y, tx):
     return w, errors
 
 
-def sigmoid(x):
-    return 1/(1+np.e**(-x))
-
-
 def ridge_regression(y, tx, lambda_):
     LAMBDA = 2 * len(y) * lambda_
 
     # Solve Normal Equations with Regularization Term
     w = np.linalg.solve((tx.T @ tx + (np.eye(len(tx[1])) * LAMBDA)), tx.T @ y)
-
     return w
 
 
